@@ -19,7 +19,7 @@ app.get('/', (req, res) =>{
   res.sendFile(path.join(__dirname, '/public/index.html'))
 });
 
-// GET Route for homepage
+// GET Route for notes page
 app.get('/notes', (req, res) =>{
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
@@ -35,7 +35,7 @@ app.get('/api/notes',(req,res)=>{
         // Convert string into JSON object
         const parsedNotes = JSON.parse(data);
 
-        // Add a new review
+        // Add a new note
         //parsedNotes.push(newNote);
         return res.json(parsedNotes);
         }
@@ -59,10 +59,10 @@ app.post('/api/notes',(req,res)=>{
             // Convert string into JSON object
             const parsedNotes = JSON.parse(data);
     
-            // Add a new review
+            // Add a new note
             parsedNotes.push(newNote);
     
-            // Write updated reviews back to the file
+            // Write updated notes back to the file
             fs.writeFile(
                 './db/db.json',
                 JSON.stringify(parsedNotes, null, 4),
@@ -97,7 +97,7 @@ app.delete('/api/notes/:id',(req,res)=>{
                 }
             }
             parsedNotes.splice(targetIndex,1);
-            // Write updated reviews back to the file
+            // Write updated notes back to the file
             fs.writeFile(
                 './db/db.json',
                 JSON.stringify(parsedNotes, null, 4),
