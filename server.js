@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const path = require('path');
 const fs = require('fs');
 // Helper method for generating unique ids
@@ -8,6 +8,7 @@ const uuid = require('./helpers/uuid');
 
 var theNotes = [];
 
+// Middleware
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(express.static("public"));
@@ -25,7 +26,7 @@ app.get('/notes', (req, res) =>{
 });
 
 
-
+// GET API Notes
 app.get('/api/notes',(req,res)=>{
     console.info("Called");
     fs.readFile('./db/db.json', 'utf8', (err, data) => {
@@ -36,16 +37,18 @@ app.get('/api/notes',(req,res)=>{
         const parsedNotes = JSON.parse(data);
 
         // Add a new note
-        //parsedNotes.push(newNote);
         return res.json(parsedNotes);
         }
     });
 });
 
+// POST API Test
 app.post('/api/test',(req,res)=>{
     console.info("Data: ", req.body);
     res.json("data was good");
 });
+
+// POST API Notes
 
 app.post('/api/notes',(req,res)=>{
     var newNote = req.body;
@@ -77,10 +80,10 @@ app.post('/api/notes',(req,res)=>{
     res.json("Note has been saved succesfully");
 });
 
-//delete action will receive a parameter that needs to be defined in the signature of the route. 
+// Delete action will receive a parameter that needs to be defined in the signature of the route. 
 app.delete('/api/notes/:id',(req,res)=>{
     console.info("params: ", req.params);
-    //req.params will have an object of parameters, and they can be retrieved by getting the attribute name. 
+    // req.params will have an object of parameters, and they can be retrieved by getting the attribute name. 
     var targetId = req.params.id;
     var targetIndex = -1;
     if(req){
